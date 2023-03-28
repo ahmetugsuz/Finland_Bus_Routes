@@ -45,10 +45,12 @@ These steps allow you to easily start and stop the entire application, including
 ### Method 2: Running Docker commands manually
 
 1. Pull the database image:  `docker pull ahmettugsuz/all_bus_routes_finland:db-v1.0`
+
 2. Run the database container: `docker run -d --name bus_routes_db -p 5432:5432 -e POSTGRES_USER=ahmettugsuz -e POSTGRES_PASSWORD=bus_finland -e POSTGRES_DB=bus_data ahmettugsuz/all_bus_routes_finland:db-v1.0`
 
-docker pull ahmettugsuz/all_bus_routes_finland:app-v1.0  
-docker run -d --name bus_routes_container -p 5000:5000 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:app-v1.0   
+3. Pull the application image: `docker pull ahmettugsuz/all_bus_routes_finland:app-v1.0`
+4. Run the application container: `docker run -d --name bus_routes_container -p 5000:5000 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:app-v1.0` 
+
 
 
 
