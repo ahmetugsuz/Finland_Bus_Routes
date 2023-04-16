@@ -9,7 +9,7 @@ The API is accessible through HTTP and provides information about the location a
 - Consume telemetry from mqtt.hsl.fi
 - Store the telemetry
 - Make the telemetry searchable in a sane way through an API (http/gRPC/SignalR)
-- Optional: Host the infrastructure needed to run the service in docker
+- Host the infrastructure needed to run the service in docker
 
 ## Usage 
 Once the containers are running, you can access the API by navigating to http://localhost:5000. The following endpoints are available:
