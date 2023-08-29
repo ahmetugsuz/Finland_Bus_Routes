@@ -2,7 +2,7 @@
 
 This project provides a service to consume telemetry from the MQTT server mqtt.hsl.fi,
 store the telemetry, and make it searchable through an API.
-The API is accessible through HTTP and provides information about the location and next stop of buses in Finland.
+The API is accessible through HTTP and provides information about the location, next stop of the buses in Finland and more.
 
 ## Features
 
@@ -20,13 +20,13 @@ Once the containers are running, you can access the API by navigating to http://
 - GET http://localhost:5000/locations/vehicles/<int:vehicle_number>': Get a list of all saved/stored information about a specific bus with given vehicle number.
 
 
-## Running the Application (First method, Easiest way)
+## Running the Application
 
-Follow these steps to run the application using Docker Compose:
+Follow these steps to run the application using Docker Compose (ps: you will need to have Docker installed locally on your machine to be able to run these methoods):
 
 There are two ways to run the application: Using Docker Compose (recommended) or running Docker commands manually
 
-### Method 1: Using Docker Compose (Recommended)
+### Method 1: Using Docker Compose (Recommended, Easiest Way)
 
 1. Clone the GitHub repository to your local machine: `git clone https://github.com/ahmetugsuz/Finland_Bus_Routes`
 
