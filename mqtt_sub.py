@@ -15,10 +15,10 @@ from requests_toolbelt.multipart.encoder import MultipartEncoder
 from gql import gql
 from gql import Client as TransportClient
 from graphql import parse
+from requests import Session
+from cleanup.cleanup import cleanup_in_progress
 
-
-class MQTTSubscriber:
-    
+class MQTTSubscriber:    
     def __init__(self, broker_address, topic, conn_pool, conn_key):
         self.broker_address = broker_address
         self.topic = topic  
@@ -40,9 +40,46 @@ class MQTTSubscriber:
 
         self.geolocator = Nominatim(user_agent="my_app") # creating a geolocater variable on my app
 
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # Disabling the ssl verification, DON'T Recommend this on dev, but to not use time on this in first place as it's not the main case, i'm avoiding it.
 
+        # Initialize the GraphQL client and set the endpoint URL
+        subscription_key = 'baf79f82592c44aabce4feff0ef46c25'
+        url = 'https://dev-api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
+        #self.graph_client = TransportClient(transport=transport, fetch_schema_from_transport=True)
+        # Set up headers with the subscription key
+        transport = RequestsHTTPTransport(
+            url=url,
+            verify=False,  # Disabling SSL verification for dev (not recommended for production)
+            headers={
+                'digitransit-subscription-key': subscription_key,
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
+            }
+        )
+        self.graph_client = TransportClient(transport=transport, fetch_schema_from_transport=True)
+
+        # Connecting to db
+        self.conn_pool = conn_pool
+        self.conn = conn_pool.getconn(key=conn_key) # getting the connection from the connection pool
+        self.cur = self.conn.cursor() # setting up the cursor
+        self.conn_key = conn_key # Connection key
+
+        self.conn.commit()
+        self.cur.execute("CREATE EXTENSION IF NOT EXISTS cube")
+        self.cur.execute("CREATE EXTENSION IF NOT EXISTS earthdistance")
+        # commit the changes to the database
+        self.conn.commit()
+        self.cur.execute("CREATE TABLE IF NOT EXISTS stop_event (id SERIAL PRIMARY KEY, status TEXT, arrival_time_to_the_stop TEXT)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS stop (id SERIAL PRIMARY KEY, tsi INTEGER, stop_event INTEGER REFERENCES stop_event(id) ON DELETE CASCADE, stop_name TEXT, latitude FLOAT, longitude FLOAT)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS bus (vehicle_number INTEGER PRIMARY KEY, operator TEXT)")  # vehicle number is the unique key
+        self.cur.execute("CREATE TABLE IF NOT EXISTS bus_status (id SERIAL PRIMARY KEY, vehicle_number INTEGER NOT NULL REFERENCES bus(vehicle_number) ON DELETE CASCADE, tsi INTEGER NOT NULL, utc_timestamp TIME, route_number TEXT, current_location TEXT," +
+                        "latitude FLOAT, longitude FLOAT, stop_id INTEGER REFERENCES stop(id) ON DELETE CASCADE, destination TEXT)")
+
+        self.conn.commit()
+
+    def get_next_stop_data(self, next_stop_name):
         # Query to get the stop location from GraphQL
-        self.graph_query_stop = """
+        graph_query_stop = """
                 query GetStop($id: String!) {
                 stop(id: $id) {
                     name
@@ -52,51 +89,32 @@ class MQTTSubscriber:
             }
         """
 
-        requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # Disabling the ssl verification, DON'T Recommend this on dev, but to not use time on this in first place as it's not the main case, i'm avoiding it.
+        # Parse the query and check for any errors
+        try:
+            document = gql(graph_query_stop)
+            #print("Query is valid.")
+        except Exception as e: # If the query is invalid 
+            print(f"Query is invalid: {e}")
 
-        # Set endpoint URL for GraphQL API
-        transport = RequestsHTTPTransport(
-            url='https://api.digitransit.fi/routing/v1/routers/finland/index/graphql',
-            verify=False # setting ssl verification to disabled manually 
-        )
-
-        # Initialize the GraphQL client and set the endpoint URL
-        self.graph_client = TransportClient(transport=transport, fetch_schema_from_transport=True)
-
-        # Connecting to db
-        self.conn_pool = conn_pool
-        self.conn = conn_pool.getconn(key=conn_key) # getting the connection from the connection pool
-        self.cur = self.conn.cursor() # setting up the cursor
-        self.conn_key = conn_key # Connection key
+        # Define the variables for the GraphQL query
+        variables = {
+            "id": "HSL:"+next_stop_name
+        }
 
 
-        # execute the SQL command to grant all privileges on the 'bus_data' database to 'ahmettugsuz'
-        self.cur.execute("GRANT ALL PRIVILEGES ON DATABASE bus_data TO ahmettugsuz")
-        self.conn.commit()
-        self.cur.execute("CREATE EXTENSION IF NOT EXISTS cube")
-        self.cur.execute("CREATE EXTENSION IF NOT EXISTS earthdistance")
-        # commit the changes to the database
-        self.conn.commit()
-        # Creating the database TABLE, (not removed) to give reader better understand, here is how its created and values in it. Some columns may be ALTERED in the database itself
-        self.cur.execute("CREATE TABLE IF NOT EXISTS stop_event (id INTEGER PRIMARY KEY, status TEXT, arrival_time_to_the_stop TEXT)")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS stop (id SERIAL PRIMARY KEY, tsi INTEGER, stop_event INTEGER REFERENCES stop_event(id), stop_name TEXT, latitude FLOAT, longitude FLOAT)")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS bus (vehicle_number INTEGER PRIMARY KEY, operator TEXT)") # vehicle number is the uynique key, assuming that there is no other duplicates, and only one operator owns the vehicle
-        self.cur.execute("CREATE TABLE IF NOT EXISTS bus_status (id SERIAL PRIMARY KEY, vehicle_number INTEGER NOT NULL REFERENCES bus(vehicle_number), tsi INTEGER NOT NULL, utc_timestamp TIME, route_number TEXT, current_location TEXT," +
-        "latitude FLOAT, longitude FLOAT, stop_id INTEGER REFERENCES stop(id), destination TEXT)")
-        self.conn.commit()
-        self.cur.execute("GRANT ALL PRIVILEGES ON TABLE bus TO ahmettugsuz")
-        self.cur.execute("GRANT ALL PRIVILEGES ON TABLE bus_status TO ahmettugsuz")
-        self.cur.execute("GRANT ALL PRIVILEGES ON TABLE stop TO ahmettugsuz")
-        self.cur.execute("GRANT ALL PRIVILEGES ON TABLE stop_event TO ahmettugsuz")
-        self.cur.execute("GRANT USAGE, SELECT ON SEQUENCE stop_id_seq TO ahmettugsuz")
-        self.cur.execute("GRANT USAGE, SELECT ON SEQUENCE bus_status_id_seq TO ahmettugsuz")
-        self.conn.commit()
+        # Execute the GraphQL query with the document and variables
+        result_next_stop = self.graph_client.execute(document, variables)
 
-
+        if result_next_stop is not None and 'stop' in result_next_stop:
+            stop_data = result_next_stop['stop']
+            return stop_data  # Return the stop data
+        else:
+            print("Failed to retrieve stop data.")
+            return None
     
 
     def on_connect(self, client, userdata, flags, rc):
-        print("Connected with result code: ", str(rc))
+        #print("LOG: Connected with result code: ", str(rc))
         client.subscribe(self.topic) # connecting to a specific topic
 
     def on_message(self, client, userdata, msg):
@@ -128,13 +146,6 @@ class MQTTSubscriber:
         vehicle_number = topic_dict["vehicle_number"]
         next_stop = topic_dict["next_stop"]
 
-        # Parse the query and check for any errors
-        try:
-            document = gql(self.graph_query_stop)
-            #print("Query is valid.")
-        except Exception as e: # If the query is invalid 
-            print(f"Query is invalid: {e}")
-
         # If trip has end, and consider our case, it's not neccassary hold up old bus values/data/information on the bus_status table
         if next_stop == "EOL" or next_stop == "": 
             try:
@@ -154,14 +165,14 @@ class MQTTSubscriber:
             utc_timestamp = payload_dict["tst"] 
             utc_datetime_obj = datetime.datetime.strptime(utc_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ").time().strftime("%H:%M:%S") # removing the millieseconds
 
-            time_string_next_stop = ""
+            time_string_next_stop = None
             if topic_parts[4] in self.vp_status and topic_parts[4] != "vp":
                 ttarr = datetime.datetime.strptime(payload_dict["ttarr"], '%Y-%m-%dT%H:%M:%S.%fZ')
                 time_to_next_stop = ttarr.time()
 
                 # Convert the time to a string in the format HH:MM:SS
                 time_string_next_stop = time_to_next_stop.strftime("%H:%M:%S")
-
+            
             # Getting the location of the bus
             # defining a empty value address. 
             current_address = "Undefined" # Undefined till we can access some values that gives us the location, oterwhise it will stay as 'Undifened'
@@ -169,14 +180,22 @@ class MQTTSubscriber:
             long = payload_dict["long"]
 
             # Getting the 'next stop' data with executing the document based on  query and the ID for the stop name we want to get
-            result_next_stop = self.graph_client.execute(document, {'id': "HSL:"+next_stop })
+            #result_next_stop = self.graph_client.execute(document, {'id': "HSL:"+next_stop })
+
+            result_next_stop = self.get_next_stop_data(next_stop_name=next_stop)
 
             stop_name = ""
+            stop_lat = 0.0  # Initialize with default latitude
+            stop_long = 0.0  # Initialize with default longitude
             # Extracting the values from the dictionary returned by execute() -> result_next_stop
-            if result_next_stop is not None and 'stop' in result_next_stop and 'name' in result_next_stop['stop']: # preventing any error that could occure
-                stop_name = result_next_stop['stop']['name'] # Extracting the stop_name  
-                stop_lat = result_next_stop['stop']['lat']
-                stop_long = result_next_stop['stop']['lon']
+            if result_next_stop is not None:
+                stop_name = result_next_stop['name']  # result_next_stop['name'] 
+                stop_lat = result_next_stop['lat'] 
+                stop_long = result_next_stop['lon'] 
+                # print(f"Stop Name: {stop_name}, Latitude: {stop_lat}, Longitude: {stop_long}")
+            else:
+                print("Stop data is not available.")
+
             if (payload_dict["loc"] == "ODO"): 
 
                 # Finding the last registered location
@@ -186,7 +205,7 @@ class MQTTSubscriber:
                 result = self.cur.fetchone() # fetching the result from the query
 
                 if result is None: # we didn't find any last stop location
-                    print("No results found")
+                    #print("No results found")
                     current_address = stop_name # we are still setting the location to be the stop location were at
                 else:
                     current_location = result[0].split(" ") # splitting the last current location because we do want the city name
@@ -194,7 +213,7 @@ class MQTTSubscriber:
                         current_address = f"{stop_name}, {current_location[-1]}" # concatenating the address, the last value should be the city name from last known location
                     else:
                         current_address = stop_name
-                stop_name = "" # Undefined -> because were leaving a stop place, the 'status' on this row should tell itself whats the data showing, it wouldn't make sense to have current and next stop location to be the same
+                # stop_name = "" # Undefined -> because were leaving a stop place, the 'status' on this row should tell itself whats the data showing, it wouldn't make sense to have current and next stop location to be the same
 
             elif (payload_dict["loc"] == "GPS") or (payload_dict["loc"] == "MAN"):
                 """
@@ -223,22 +242,36 @@ class MQTTSubscriber:
             if topic_parts[4] == "dep": # we don't need to show what next stop here is, as it already departing from the stop, and showing current location, while next stop is not defined yet
                 stop_name = "" # can be confusing to show next stop, so we set it as empty, while status of it telling what the situation is, it gives enough information to the user
 
-            # Executing the insert of the values into the tables
-            self.cur.execute("INSERT INTO bus (vehicle_number, operator) SELECT %s, %s WHERE NOT EXISTS (SELECT 1 FROM bus WHERE vehicle_number = %s)", (vehicle_number, self.oper_dict[payload_dict["oper"]], vehicle_number))
+
+            self.cur.execute("INSERT INTO bus (vehicle_number, operator) VALUES (%s, %s) ON CONFLICT (vehicle_number) DO UPDATE SET operator = EXCLUDED.operator WHERE bus.vehicle_number = EXCLUDED.vehicle_number", (vehicle_number, self.oper_dict[payload_dict["oper"]]))
             self.conn.commit() # committing it, after inserts, while there are relation betweens the tables, it needs to be updated 
-            if payload_dict["stop"] != None:
-                self.cur.execute("INSERT INTO stop_event (id, status, arrival_time_to_the_stop) SELECT %s, %s, %s WHERE NOT EXISTS (SELECT 1 FROM stop_event WHERE id = %s)", (payload_dict["stop"], status, time_string_next_stop, payload_dict["stop"]))
-            self.conn.commit()
+
+            if payload_dict["stop"] is not None:
+                self.cur.execute("INSERT INTO stop_event (id, status, arrival_time_to_the_stop) VALUES (%s, %s, %s) ON CONFLICT (id) DO UPDATE SET status = EXCLUDED.status, arrival_time_to_the_stop = EXCLUDED.arrival_time_to_the_stop", (payload_dict["stop"], status, time_string_next_stop))
+                self.conn.commit()
+
             self.cur.execute("INSERT INTO stop (tsi, stop_event, stop_name, latitude, longitude) VALUES (%s, %s, %s, %s, %s)", (payload_dict["tsi"], payload_dict["stop"], stop_name, stop_lat, stop_long))
             self.conn.commit()
-            #self.cur.execute("INSERT INTO bus_status (vehicle_number, tsi, route_number, current_location, latitude, longitude, stop_id, destination) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", 
-            #(vehicle_number, payload_dict["tsi"], payload_dict["desi"], current_address, lat, long, payload_dict["stop"], topic_dict["destination"]))
 
-            self.cur.execute("INSERT INTO bus_status (vehicle_number, tsi, utc_timestamp, route_number, current_location, latitude, longitude, stop_id, destination) SELECT %s, %s, %s, %s, %s, %s, %s, (SELECT stop.id FROM stop ORDER BY stop.id DESC LIMIT 1), %s",
-            (vehicle_number, payload_dict["tsi"], utc_datetime_obj, payload_dict["desi"], current_address, lat, long, topic_dict["destination"]))
 
-            #self.cur.execute("INSERT INTO bus (vehicle_number, operator, current_location, route_number, start_time, tsi, status, next_stop, arrival_time_to_the_stop, destination) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            #(vehicle_number, self.oper_dict[payload_dict["oper"]], current_address, payload_dict["desi"], start_time, payload_dict["tsi"], status, stop_name, time_string_next_stop, topic_dict["destination"]))
+            # Check if the bus record exists in the bus table
+            self.cur.execute("SELECT 1 FROM bus WHERE vehicle_number = %s", (vehicle_number,))
+            bus_exists = self.cur.fetchone()
+
+            self.cur.execute("SELECT 1 FROM stop WHERE id = (SELECT stop.id FROM stop ORDER BY stop.id DESC LIMIT 1)")
+            stop_id_exists = self.cur.fetchone()
+            if bus_exists and stop_id_exists:
+                # Both the bus record and stop.id exist, so you can proceed with the insertion
+                self.cur.execute("INSERT INTO bus_status (vehicle_number, tsi, utc_timestamp, route_number, current_location, latitude, longitude, stop_id, destination) SELECT %s, %s, %s, %s, %s, %s, %s, (SELECT stop.id FROM stop ORDER BY stop.id DESC LIMIT 1), %s",
+                                (vehicle_number, payload_dict["tsi"], utc_datetime_obj, payload_dict["desi"], current_address, lat, long, topic_dict["destination"]))
+                self.conn.commit()
+            else:
+                # Either the bus record or stop.id (or both) do not exist, handle the error
+                if not bus_exists:
+                    print(f"Bus record with vehicle_number {vehicle_number} does not exist in the bus table. Skipping insertion into bus_status.")
+                if not stop_id_exists:
+                    print("stop.id does not exist in the stop table. Skipping insertion into bus_status.")
+
             self.conn.commit()
 
 
