@@ -222,19 +222,19 @@ This endpoint accumulates and provides the most recently available recorded data
     - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä", "city": "Vehkamäki"). 
     - `radius:` The radius (in meters) within which to search for buses near the provided location.  
 
-        **Example Request (request body):**
-        ```json
-        POST /buses_near_me
-        {
-            "location": {
-            "street": "Turunväylä",
-            "city": "Vehkamäki"
-            },
-            "radius": 150
-        }
-        ```
-    **Example response from the backend to the frontend on request:**  
+    **Example Request (request body):**
+    ```json
+    POST /buses_near_me
+    {
+        "location": {
+        "street": "Turunväylä",
+        "city": "Vehkamäki"
+        },
+        "radius": 150
+    }
+    ```  
 
+    **Example response from the backend to the frontend on request:**  
     ```json
     [
         {
@@ -248,3 +248,5 @@ This endpoint accumulates and provides the most recently available recorded data
         }
     ]
     ```
+
+## More Information
