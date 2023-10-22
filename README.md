@@ -111,14 +111,17 @@ This historical endpoint provides a log of all related data for each active bus 
 This endpoint accumulates and provides the most recently available recorded data for each active bus in Finland. It offers data collected up to the last telemetry signal received for each bus, which may vary based on their individual transmission frequencies.
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
-- **[GET] http://localhost:5001/vehicles/{vehicle_number}**  
-This endpoint allows users to retrieve specific information for a vehicle by providing its unique vehicle number as a parameter in the URL.  
+- **[GET] http://localhost:5001/vehicles/{vehicle_number}**   
+    This endpoint allows users to retrieve specific information for a vehicle by providing its unique vehicle number as a parameter in the URL.  
+
     **Parameters:** 
     vehicle_number (integer): The unique identifier for the vehicle. Replace {vehicle_number} in the URL with the actual vehicle number.  
+
     **Example:**  
     To retrieve information for a vehicle with the number 1340, make a GET request to: 
-    http://localhost:5001/vehicles/1340
-    **Example response for vehicle number 1340:**
+    - http://localhost:5001/vehicles/1340  
+
+    **Example response for vehicle number 1340:**  
     ```json
     [
         {
@@ -147,67 +150,67 @@ This endpoint allows users to retrieve specific information for a vehicle by pro
     ```
 
 - **[GET] http://localhost:5001/buses_within_radius/{street}/{city}/{radius}**  
-This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
+    This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
 
-**Parameters:**
-   -  building number (int): The number of the building (optional).  
-   -  street (string): The name of the street or specific location (optional).  
-   -  city (string): The city in Finland (optional).  
-   -  region (string): The region within Finland (optional).  
-   -  radius (integer): The search radius in meters.  
+    **Parameters:**
+    -  building number (int): The number of the building (optional).  
+    -  street (string): The name of the street or specific location (optional).  
+    -  city (string): The city in Finland (optional).  
+    -  region (string): The region within Finland (optional).  
+    -  radius (integer): The search radius in meters.  
 
-**Example:**  
-To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
-   - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
+    **Example:**  
+    To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
+    - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
 
-**Example Requests:**
-i. Search by street and city, within a radius of 1000 meters:  
-   - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
+    **Example Requests:**
+    i. Search by street and city, within a radius of 1000 meters:  
+    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
 
-ii. Search by street and region only, within a radius of 2000 meters:  
-   - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
+    ii. Search by street and region only, within a radius of 2000 meters:  
+    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
 
-iii. Search by street and building number, within a radius of 500 meters:
-   - Request example: /buses_within_radius/22/Tullivuorentie/500  
+    iii. Search by street and building number, within a radius of 500 meters:
+    - Request example: /buses_within_radius/22/Tullivuorentie/500  
 
-And more of these type of combinations ...
+    And more of these type of combinations ...
 
-**Example Response on http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500:**
+    **Example Response on http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500:**
 
-```json
-[
-    {
-        "vehicle_number": 1932,
-        "route_number": "108N",
-        "utc_timestamp": "21:27:54",
-        "current_location": "3a, Topeliuksenkatu, Uusimaa",
-        "destination": "Kamppi",
-        "operator": "Helsingin Bussiliikenne Oy",
-        "next_stop": "Töölöntori"
-    },
-    {
-        "vehicle_number": 446,
-        "route_number": "231N",
-        "utc_timestamp": "21:28:27",
-        "current_location": "88, Mannerheimintie, Uusimaa",
-        "destination": "Elielinaukio",
-        "operator": "Oy Pohjolan Liikenne Ab",
-        "next_stop": "Töölön kisahalli"
-    },
-    {
-        "vehicle_number": 1247,
-        "route_number": "40",
-        "utc_timestamp": "21:28:30",
-        "current_location": "50, Mannerheimintie, Uusimaa",
-        "destination": "Elielinaukio",
-        "operator": "Nobina Finland Oy",
-        "next_stop": "Hesperian puisto"
-    },
-]
-```
+    ```json
+    [
+        {
+            "vehicle_number": 1932,
+            "route_number": "108N",
+            "utc_timestamp": "21:27:54",
+            "current_location": "3a, Topeliuksenkatu, Uusimaa",
+            "destination": "Kamppi",
+            "operator": "Helsingin Bussiliikenne Oy",
+            "next_stop": "Töölöntori"
+        },
+        {
+            "vehicle_number": 446,
+            "route_number": "231N",
+            "utc_timestamp": "21:28:27",
+            "current_location": "88, Mannerheimintie, Uusimaa",
+            "destination": "Elielinaukio",
+            "operator": "Oy Pohjolan Liikenne Ab",
+            "next_stop": "Töölön kisahalli"
+        },
+        {
+            "vehicle_number": 1247,
+            "route_number": "40",
+            "utc_timestamp": "21:28:30",
+            "current_location": "50, Mannerheimintie, Uusimaa",
+            "destination": "Elielinaukio",
+            "operator": "Nobina Finland Oy",
+            "next_stop": "Hesperian puisto"
+        },
+    ]
+    ```
 
-***Note:*** Replace the `street`, `city`, and `radius` values in the URL with your desired location and radius parameters.  
-***Remember:***  A higher radius targets larger area around the address provided in the url.  
+    ***Note:*** Replace the `street`, `city`, and `radius` values in the URL with your desired location and radius parameters.  
+    ***Remember:***  A higher radius targets larger area around the address provided in the url.  
 
 - **[POST] /buses_near_me**
 This endpoint is designed for frontend use and allows users to request bus information near a specified location.
