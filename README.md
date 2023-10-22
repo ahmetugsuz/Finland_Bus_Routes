@@ -96,31 +96,22 @@ Once the containers are up and running, you can access the API endpoints by navi
 The following endpoints are available:   
 
 - **[GET] http://localhost:5001/locations**  
-
-This endpoint returns JSON data of locations for active buses in Finland, displaying the most recent updates for each bus.   
-
+This endpoint returns JSON data of locations for active buses in Finland, displaying the most recent updates for each bus.  
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/locations/next_stop**  
-
-This endpoint returns JSON data of locations and their next stop information for active buses in Finland, displaying the most recent updates for each bus.  
-
+This endpoint returns JSON data of locations and their next stop information for active buses in Finland, displaying the most recent updates for each bus. 
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /vehicle_number API-endpoint as shown down below.  
 
-- **[GET] http://localhost:5001/locations/logger**   
-
+- **[GET] http://localhost:5001/locations/logger**  
 This historical endpoint provides a log of all related data for each active bus in Finland. It allows you to access a comprehensive record of information about each bus, including historical data and changes over time.
-
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/locations/latest**  
-
 This endpoint accumulates and provides the most recently available recorded data for each active bus in Finland. It offers data collected up to the last telemetry signal received for each bus, which may vary based on their individual transmission frequencies.
-
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/vehicles/{vehicle_number}**   
-
     This endpoint allows users to retrieve specific information for a vehicle by providing its unique vehicle number as a parameter in the URL.  
 
     **Parameters:**   
@@ -160,7 +151,6 @@ This endpoint accumulates and provides the most recently available recorded data
 
 
 - **[GET] http://localhost:5001/buses_within_radius/{street}/{city}/{radius}**  
-
     This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
 
     **Parameters:**  
