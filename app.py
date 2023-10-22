@@ -415,7 +415,7 @@ def get_vehicle(vehicle_number: int):
 @app.route('/buses_within_radius/<string:street>/<string:city>/<int:radius>')
 def buses_within_radius(street, city, radius):
     """ 
-    - input: street and city name to get the location of the user, and a radius to show bus near user
+    - input: street and city (or region, building number or other attributes) name to get the location of the user, and a radius to show bus near user
     - output: json data about the buses near the user  
     This function takes as input a street and city name to determine the user's location, as well as a radius to display buses located near the user. 
     The output is a JSON object containing data about the buses in the vicinity of the user.
@@ -425,9 +425,12 @@ def buses_within_radius(street, city, radius):
     # creating a geolocater variable on my app
     api_key = 'b5c600c5d1284ee0b9abc6c69ef95a3b'
     geocoder = OpenCageGeocode(api_key)
-    location = f'{street}, {city}'
+    location = f'{street}, {city}' # called it street and city to simplify, but it can be building number, region or other attributes
     response = geocoder.geocode(location)
-    
+
+    if not response: # handles wrong given address/location to geocoder
+        return jsonify({"Error message": "Invalid response from the geocoder service. Please check your location input data or try again later."})
+
     # if the request was successful
     try: 
         if response and len(response):
@@ -498,7 +501,7 @@ def buses_within_radius(street, city, radius):
 
 # This method is doing nearly the same as the method below buses_within_radius(),
 #   the difference is that i would prefer to use a method like this on my frontend to ensure i can pass the location address with json to this method 
-@app.route('/buses_near_me', methods=['GET'])
+@app.route('/buses_near_me', methods=['POST'])
 def buses_near_me():
     """
     - input: street and city name to get the location of the user, and a radius to show bus near user
@@ -513,7 +516,10 @@ def buses_near_me():
     api_key = 'b5c600c5d1284ee0b9abc6c69ef95a3b'
     geocoder = OpenCageGeocode(api_key)
     location = data['location'] # getting the requested location fron the json data
-    response = geocoder.geocode(location)
+    city = location['city']
+    street = location['street']
+    address = f'{city}, {street}' # called it street and city to simplify, but it can be building number, region or other attributes
+    response = geocoder.geocode(address)
 
     # if the request was successful
     if response.ok:

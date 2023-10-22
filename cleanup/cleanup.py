@@ -38,6 +38,7 @@ logging.basicConfig(
 )
 
 timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+minutes = timestamp.split(":")[1]
 
 # Function to establish a database connection with retries
 def connect_to_database():
