@@ -31,14 +31,14 @@ This project includes the following features:
 
 **Status:** Finland Bus Routes is actively maintained and continuously updated to provide the latest and most accurate bus telemetry data.  
 
-## Getting Started
 
+## Getting Started 
 
 To run the application, you can use Docker Compose, which simplifies the setup process. Here's how to do it:
 
 ### Method 1: Using Docker Compose (Recommended, Easiest Way)
 
-#### Building the Application
+#### Building the Application <a name="building"></a>
 
 1. Clone the GitHub repository to your local machine:
     - `git clone https://github.com/ahmetugsuz/Finland_Bus_Routes`  
@@ -222,7 +222,7 @@ This endpoint accumulates and provides the most recently available recorded data
 
     **Input Parameters:**  
 
-    - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä", "city": "Vehkamäki"). 
+    - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä",  "city": "Vehkamäki"). 
     - `radius:` The radius (in meters) within which to search for buses near the provided location.  
 
     **Example Request (request body):**
@@ -230,8 +230,8 @@ This endpoint accumulates and provides the most recently available recorded data
     POST /buses_near_me
     {
         "location": {
-        "street": "Turunväylä",
-        "city": "Vehkamäki"
+            "street": "Turunväylä",
+            "city": "Vehkamäki"
         },
         "radius": 150
     }
@@ -253,3 +253,141 @@ This endpoint accumulates and provides the most recently available recorded data
     ```
 
 ## More Information
+
+### Key Features
+
+1. **Real-Time Telemetry Data**: The service continuously collects real-time telemetry data from the mqtt.hsl.fi MQTT server. Telemetry data typically includes GPS coordinates, speed, and other relevant information about buses operating in Finland.
+
+2. **Data Storage**: All collected telemetry data is efficiently stored in a MySQL database for easy retrieval and analysis. Historical data can be invaluable for various purposes, such as route optimization and performance analysis.
+
+3. **User-Friendly API**: To facilitate access to the collected data, the service offers a user-friendly JSON API. This API allows developers, transit enthusiasts, and researchers to access the telemetry data without the need for direct server access or complex data processing.
+
+4. **Bus Location Information**: Users can retrieve precise information about the current location address of buses, including latitude and longitude (stored in the database). This feature is particularly useful for tracking the real-time position of buses on the road.
+
+5. **Next Stop Details**: For passengers and commuters, the service provides information about the next bus stop, making it easier to plan journeys and arrivals.
+
+6. **Route Information**: Detailed route information, such as the scheduled stops and the order in which they are approached, can be accessed through the API. This feature is essential for travelers looking for specific bus routes and schedules.  
+
+
+### Use Cases  
+  
+- **Public Transportation**: Commuters can use the service to track the real-time location of buses and determine when the next bus will arrive at their stop, improving the overall public transportation experience.  
+
+- **Traffic Management**: Local authorities and transportation agencies can utilize the collected telemetry data for traffic management, route optimization, and decision-making.  
+
+- **Research and Analysis**: Researchers and analysts can access historical data to perform studies, analyze trends, and gain insights into the efficiency and performance of the public transportation system.  
+
+- **Developers and App Integration**: Developers can integrate the service's API into their applications to provide users with bus-related information, such as location tracking and arrival times.    
+
+The `Finland Bus Routes` service is a valuable resource for improving public transportation experiences, enhancing traffic management, and supporting research efforts related to bus operations in Finland. Its real-time telemetry data and accessible API make it a powerful tool for a wide range of users and applications.  
+
+
+### Architecture
+
+#### Database Architecture
+
+This section provides an overview of the database architecture utilized in the Finland Bus Routes application. The application relies on MySQL as the database management system to store and manage data related to bus stops, buses, real-time telemetry, and associated events.
+
+##### stop_event Table
+
+This table stores information about stop events, including status and arrival times.
+
+**Fields:**
+- `id` (Primary Key): A unique identifier for each stop event.
+- `status`: Textual information about the stop event status.
+- `arrival_time_to_the_stop`: The estimated arrival time for the bus at the stop.
+
+##### stop Table
+
+The `stop` table captures data related to bus stops, their locations, and associated stop events.
+
+**Fields:**
+- `id` (Primary Key): A unique identifier for each bus stop.
+- `tsi`: A numerical timestamp indicating the time of the stop event.
+- `stop_event`: A foreign key reference to the associated stop event.
+- `stop_name`: The name or identifier of the bus stop.
+- `latitude` and `longitude`: Geographical coordinates of the bus stop's location.
+
+##### bus Table
+
+This table provides information about buses, including their unique vehicle numbers and operators.
+
+**Fields:**
+- `vehicle_number` (Primary Key): The unique key used to identify each bus.
+- `operator`: The operator responsible for the bus.
+
+##### bus_status Table
+
+The `bus_status` table serves as the primary data repository for real-time telemetry of active buses.
+
+**Fields:**
+- `id` (Primary Key): A unique identifier for each telemetry data entry.
+- `vehicle_number`: A reference to the specific bus via its vehicle number.
+- `tsi`: A numerical timestamp associated with the telemetry data.
+- `utc_timestamp`: The Coordinated Universal Time (UTC) timestamp for data recording.
+- `route_number`: The bus route number.
+- `current_location`: The current location of the bus.
+- `latitude` and `longitude`: Geographical coordinates of the bus's position.
+- `stop_id`: A reference to the associated bus stop.
+- `destination`: The final destination of the bus.
+
+These tables are interconnected to capture comprehensive data about the buses and their activities, enabling real-time tracking and information retrieval.
+
+### Database Realation Diagram
+
+### Cleanup Application
+
+The Cleanup Application is an essential component of the Finland Bus Routes system, designed to cater to developer needs. Its primary role is to maintain the database, ensuring optimal performance and data freshness. This component was developed with specific goals in mind:
+
+- **Database Maintenance**: The continuous data accumulation from buses across Finland necessitates regular database maintenance. The Cleanup Application is responsible for the scheduled purging of outdated data, preventing the database from becoming unwieldy.
+
+- **Developer Focus**: Finland Bus Routes primarily targets developers interested in exploring and understanding real-time bus telemetry data. For this developer-focused environment, historical data may not be necessary, making the Cleanup Application a valuable asset.
+
+#### Configuration
+
+The Cleanup Application is set to perform cleanup every 3 minutes by default, ensuring that the database remains up-to-date without retaining outdated information. However, the cleanup interval is configurable to meet specific requirements.
+
+To customize the Cleanup Application's cleanup interval (e.g., every 24 hours to perform daily cleanup, clearing data from the previous day), follow these steps:
+
+1. Open the Cleanup Application's configuration file (`cleanup.py`).
+2. Locate the setting (variable inside the code) for the cleanup interval.
+3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = 86,400 seconds or 1 hour = 3,600 seconds).
+4. Save the configuration file.
+5. Rebuild the application as described in the [Building the Application](#building-the-application) section. If you don't want to rebuild the entire application (which might lead to missing some data), consider building only the `cleanup.py` component.
+
+By extending the cleanup interval, you can retain bus telemetry data for a full day or even weeks/months, accommodating scenarios where historical data is more relevant.
+
+This adaptability allows you to strike a balance between maintaining an up-to-the-minute database for development purposes and preserving data for longer durations when needed.
+
+
+### Error Handling and Data Resilience
+
+#### Continuous Data Updates
+
+The Finland Bus Routes service is designed to ensure the continuous consumption of telemetry data, even in the presence of error messages or application issues. This resilient approach guarantees that data updates are consistently processed, providing ongoing access to reliable and real-time information. If you encounter an error on one of the API endpoints, try the following steps:
+
+1. Refresh the page to verify if the data is still updating.
+2. Attempt other API endpoints to cross-check.
+3. If data is not updating, check the terminal for any critical issues.
+4. If necessary, restart the service.
+
+#### Resolving Data Disruptions
+
+In case you notice any disruptions in data updates, you have the flexibility to manually restart the application or application image (`app.py`) while keeping the database operational. This robust error-handling mechanism ensures uninterrupted data acquisition, contributing to a reliable and responsive service.
+
+This feature allows you to maintain the flow of information and data integrity, even when troubleshooting or addressing application errors. It offers a seamless user experience and reliability in accessing up-to-the-minute bus data across Finland.
+
+### Contributing
+
+If you'd like to contribute to this project, your contributions are more than welcome. You can contribute in the following ways:
+
+- **Open an Issue**: If you encounter any problems, have suggestions, or want to discuss enhancements, please open an issue. It's a valuable way to communicate your ideas and concerns.
+
+- **Submit a Pull Request**: If you'd like to directly contribute code, you can fork this repository, make your changes, and submit a pull request. Your contributions will be reviewed and considered for inclusion.
+
+- **Provide Feedback**: Feel free to share your thoughts, ideas, and feedback related to the project. Your insights can help improve the service for everyone.
+
+Your contributions are highly appreciated, and together we can make this project even better! You can always contact me through my website: ahmettu.com
+
+
+
