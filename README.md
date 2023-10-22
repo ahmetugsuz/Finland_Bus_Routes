@@ -113,41 +113,38 @@ This endpoint accumulates and provides the most recently available recorded data
 
 - **[GET] http://localhost:5001/vehicles/{vehicle_number}**  
 This endpoint allows users to retrieve specific information for a vehicle by providing its unique vehicle number as a parameter in the URL.  
-   - Parameters:  
-    vehicle_number (integer): The unique identifier for the vehicle. Replace {vehicle_number} in the URL with the actual vehicle number.
-
-**Example:**  
-
-To retrieve information for a vehicle with the number 1340, make a GET request to:
-   - http://localhost:5001/vehicles/1340
-
-**Example response for vehicle number 1340:**
-```json
-[
-    {
-    "vehicle_number": 1340,
-    "route_number": "731N",
-    "utc_timestamp": "21:30:07",
-    "current_location": "Lahdenväylä, Viikinranta, Uusimaa",
-    "destination": "Kulomäki",
-    "next_stop": "Kamppi",
-    "operator": "Helsingin Bussiliikenne Oy",
-    "status": "Driving",
-    "arrival_time_to_the_stop": "None"
-    },
-    {
-        "vehicle_number": 1340,
-        "route_number": "731N",
-        "utc_timestamp": "21:45:28",
-        "current_location": "Lahdenväylä, Kolohonka, Uusimaa",
-        "destination": "Kulomäki",
-        "next_stop": "Lugnet",
-        "operator": "Helsingin Bussiliikenne Oy",
-        "status": null,
-        "arrival_time_to_the_stop": "None"
-    }, 
-]
-```
+    **Parameters:** 
+    vehicle_number (integer): The unique identifier for the vehicle. Replace {vehicle_number} in the URL with the actual vehicle number.  
+    **Example:**  
+    To retrieve information for a vehicle with the number 1340, make a GET request to: 
+    http://localhost:5001/vehicles/1340
+    **Example response for vehicle number 1340:**
+    ```json
+    [
+        {
+            "vehicle_number": 1340,
+            "route_number": "731N",
+            "utc_timestamp": "21:30:07",
+            "current_location": "Lahdenväylä, Viikinranta, Uusimaa",
+            "destination": "Kulomäki",
+            "next_stop": "Kamppi",
+            "operator": "Helsingin Bussiliikenne Oy",
+            "status": "Driving",
+            "arrival_time_to_the_stop": "None"
+        },
+        {
+            "vehicle_number": 1340,
+            "route_number": "731N",
+            "utc_timestamp": "21:45:28",
+            "current_location": "Lahdenväylä, Kolohonka, Uusimaa",
+            "destination": "Kulomäki",
+            "next_stop": "Lugnet",
+            "operator": "Helsingin Bussiliikenne Oy",
+            "status": null,
+            "arrival_time_to_the_stop": "None"
+        }, 
+    ]
+    ```
 
 - **[GET] http://localhost:5001/buses_within_radius/{street}/{city}/{radius}**  
 This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
