@@ -334,6 +334,7 @@ The `bus_status` table serves as the primary data repository for real-time telem
 These tables are interconnected to capture comprehensive data about the buses and their activities, enabling real-time tracking and information retrieval.
 
 ### Database Realation Diagram
+![Database Realation Diagram](Database-relation-diagram.png)
 
 ### Cleanup Application
 
@@ -387,7 +388,7 @@ If you'd like to contribute to this project, your contributions are more than we
 
 - **Provide Feedback**: Feel free to share your thoughts, ideas, and feedback related to the project. Your insights can help improve the service for everyone.
 
-Your contributions are highly appreciated, and together we can make this project even better! You can always contact me through my website: ahmettu.com
+Your contributions are highly appreciated, and together we can make this project even better! You can always contact me through my website: [www.ahmettu.com](https://www.ahmettu.com)
 
 
 
