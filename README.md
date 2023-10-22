@@ -114,11 +114,11 @@ This endpoint accumulates and provides the most recently available recorded data
 - **[GET] http://localhost:5001/vehicles/{vehicle_number}**   
     This endpoint allows users to retrieve specific information for a vehicle by providing its unique vehicle number as a parameter in the URL.  
 
-    **Parameters:** 
+    **Parameters:**   
     vehicle_number (integer): The unique identifier for the vehicle. Replace {vehicle_number} in the URL with the actual vehicle number.  
 
     **Example:**  
-    To retrieve information for a vehicle with the number 1340, make a GET request to: 
+    To retrieve information for a vehicle with the number 1340, make a GET request to:  
     - http://localhost:5001/vehicles/1340  
 
     **Example response for vehicle number 1340:**  
@@ -152,30 +152,30 @@ This endpoint accumulates and provides the most recently available recorded data
 - **[GET] http://localhost:5001/buses_within_radius/{street}/{city}/{radius}**  
     This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
 
-    **Parameters:**
+    **Parameters:**  
     -  building number (int): The number of the building (optional).  
     -  street (string): The name of the street or specific location (optional).  
     -  city (string): The city in Finland (optional).  
     -  region (string): The region within Finland (optional).  
     -  radius (integer): The search radius in meters.  
 
-    **Example:**  
+    **Example:**    
     To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
     - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
 
-    **Example Requests:**
-    i. Search by street and city, within a radius of 1000 meters:  
-    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
+    **Example Requests:**  
+    i. Search by street and city, within a radius of 1000 meters:    
+       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
 
     ii. Search by street and region only, within a radius of 2000 meters:  
-    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
+       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
 
-    iii. Search by street and building number, within a radius of 500 meters:
-    - Request example: /buses_within_radius/22/Tullivuorentie/500  
+    iii. Search by street and building number, within a radius of 500 meters:  
+       - Request example: /buses_within_radius/22/Tullivuorentie/500    
 
     And more of these type of combinations ...
 
-    **Example Response on http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500:**
+    ### Example Response on http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500:
 
     ```json
     [
@@ -212,37 +212,39 @@ This endpoint accumulates and provides the most recently available recorded data
     ***Note:*** Replace the `street`, `city`, and `radius` values in the URL with your desired location and radius parameters.  
     ***Remember:***  A higher radius targets larger area around the address provided in the url.  
 
-- **[POST] /buses_near_me**
-This endpoint is designed for frontend use and allows users to request bus information near a specified location.
-It operates as a POST method to enable the frontend to send location data to the backend and receive bus data in response.
+- **[POST] /buses_near_me**  
 
-**Input Parameters:**
-   - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä", "city": "Vehkamäki"). 
-   - `radius:` The radius (in meters) within which to search for buses near the provided location.  
+    This endpoint is designed for frontend use and allows users to request bus information near a specified location.
+    It operates as a POST method to enable the frontend to send location data to the backend and receive bus data in response.
 
-    **Example Request (request body):**
+    **Input Parameters:**  
+
+    - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä", "city": "Vehkamäki"). 
+    - `radius:` The radius (in meters) within which to search for buses near the provided location.  
+
+        **Example Request (request body):**
+        ```json
+        POST /buses_near_me
+        {
+            "location": {
+            "street": "Turunväylä",
+            "city": "Vehkamäki"
+            },
+            "radius": 150
+        }
+        ```
+    **Example response from the backend to the frontend on request:**  
+
     ```json
-      POST /buses_near_me
-      {
-        "location": {
-          "street": "Turunväylä",
-          "city": "Vehkamäki"
-        },
-        "radius": 150
-      }
+    [
+        {
+            "vehicle_number": 1053,
+            "route_number": "520",
+            "utc_timestamp": "22:06:50",
+            "current_location": "Turunväylä, Vehkamäki, Uusimaa",
+            "destination": "Matinkylä (M)",
+            "operator": "Oy Pohjolan Liikenne Ab",
+            "next_stop": "Nihtisilta"
+        }
+    ]
     ```
-**Example response from the backend to the frontend on request:**
-
-```json
-[
-    {
-        "vehicle_number": 1053,
-        "route_number": "520",
-        "utc_timestamp": "22:06:50",
-        "current_location": "Turunväylä, Vehkamäki, Uusimaa",
-        "destination": "Matinkylä (M)",
-        "operator": "Oy Pohjolan Liikenne Ab",
-        "next_stop": "Nihtisilta"
-    }
-]
-```
