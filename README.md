@@ -6,6 +6,20 @@ Welcome to the Finland Bus Routes project! This application provides a service t
 ## Table Of Contents
 - [Features](#features)
 - [Overview](#overview)
+- [Getting Started](#getting-started)
+    - [Method 1 (Recommended)](#method-1)
+    - [Method 2](#method-2)
+- [Usage](#usage)
+- [More Information](#more-inforamtion)
+    - [Key Features](#key-features)
+    - [Use Cases](#use-cases)
+    - [Architecture](#architecture)
+        - [Database Architecture](#database-architecture)
+        - [Database Relation Diagram](#database-relation-diagram)
+        - [Configuration](#configuration)
+        - [Error Handling and Data Resilience](#error-handling)
+    - [Contributing](#contributing)
+
 
 
 ## Features <a name="features"></a>
@@ -33,11 +47,11 @@ This project includes the following features:
 **Status:** Finland Bus Routes is actively maintained and continuously updated to provide the latest and most accurate bus telemetry data.  
 
 
-## Getting Started 
+## Getting Started <a name="getting-started"></a>
 
 To run the application, you can use Docker Compose, which simplifies the setup process. Here's how to do it:
 
-### Method 1: Using Docker Compose (Recommended, Easiest Way)
+### Method 1: Using Docker Compose (Recommended, Easiest Way) <a name="method-1"></a>
 
 #### Building the Application <a name="building"></a>
 
@@ -74,7 +88,7 @@ Running docker-compose down will not only stop the application but also remove t
 These steps allow you to easily start and stop the entire application, including all the required services, using Docker Compose.
 
 
-### Method 2: Running Docker commands manually
+### Method 2: Running Docker commands manually <a name="method-2"></a>
 1. Pull the database image:  
 
        docker pull ahmettugsuz/all_bus_routes_finland:db-v1.0    
@@ -104,7 +118,7 @@ These steps allow you to easily start and stop the entire application, including
        docker rm bus_routes_db     
 
 
-## Usage 
+## Usage <a name="usage"></a>
 
 Once the containers are up and running, you can access the API endpoints by navigating to http://localhost:5001 and appending the desired endpoint to the URL. Alternatively, click on the endpoints listed below.
 The following endpoints are available:   
@@ -270,9 +284,9 @@ This endpoint accumulates and provides the most recently available recorded data
     ]
     ```
 
-## More Information
+## More Information <a name="more-information"></a>
 
-### Key Features
+### Key Features <a name="key-features"></a>
 
 1. **Real-Time Telemetry Data**: The service continuously collects real-time telemetry data from the mqtt.hsl.fi MQTT server. Telemetry data typically includes GPS coordinates, speed, and other relevant information about buses operating in Finland.
 
@@ -287,7 +301,7 @@ This endpoint accumulates and provides the most recently available recorded data
 6. **Route Information**: Detailed route information, such as the scheduled stops and the order in which they are approached, can be accessed through the API. This feature is essential for travelers looking for specific bus routes and schedules.  
 
 
-### Use Cases  
+### Use Cases  <a name="use-cases"></a>
   
 - **Public Transportation**: Commuters can use the service to track the real-time location of buses and determine when the next bus will arrive at their stop, improving the overall public transportation experience.  
 
@@ -300,9 +314,9 @@ This endpoint accumulates and provides the most recently available recorded data
 The `Finland Bus Routes` service is a valuable resource for improving public transportation experiences, enhancing traffic management, and supporting research efforts related to bus operations in Finland. Its real-time telemetry data and accessible API make it a powerful tool for a wide range of users and applications.  
 
 
-### Architecture
+### Architecture <a name="architecture"></a>
 
-#### Database Architecture
+#### Database Architecture <a name="database-architecture"></a>
 
 This section provides an overview of the database architecture utilized in the Finland Bus Routes application. The application relies on MySQL as the database management system to store and manage data related to bus stops, buses, real-time telemetry, and associated events.  
 Below, you'll find details on the tables used in the MySQL database and their respective fields, outlining the structure and pupose of each table's columns: 
@@ -352,10 +366,10 @@ Below, you'll find details on the tables used in the MySQL database and their re
 
 These tables are interconnected to capture comprehensive data about the buses and their activities, enabling real-time tracking and information retrieval.
 
-### Database Realation Diagram
-![Database Realation Diagram](Database-relation-diagram.png)
+### Database Ralation Diagram <a name="database-relation-diagram"></a>
+![Database Relation Diagram](Database-relation-diagram.png)
 
-### Cleanup Application
+### Cleanup Application <a name="cleanup-application"></a>
 
 The Cleanup Application is an essential component of the Finland Bus Routes system, designed to cater to developer needs. Its primary role is to maintain the database, ensuring optimal performance and data freshness. This component was developed with specific goals in mind:
 
@@ -363,7 +377,7 @@ The Cleanup Application is an essential component of the Finland Bus Routes syst
 
 - **Developer Focus**: Finland Bus Routes primarily targets developers interested in exploring and understanding real-time bus telemetry data. For this developer-focused environment, historical data may not be necessary, making the Cleanup Application a valuable asset.
 
-#### Configuration
+#### Configuration <a name="configuration"></a>
 
 The Cleanup Application is set to perform cleanup every 3 minutes by default, ensuring that the database remains up-to-date without retaining outdated information. However, the cleanup interval is configurable to meet specific requirements.
 
@@ -384,7 +398,7 @@ By extending the cleanup interval, you can retain bus telemetry data for a full 
 This adaptability allows you to strike a balance between maintaining an up-to-the-minute database for development purposes and preserving data for longer durations when needed.
 
 
-### Error Handling and Data Resilience
+### Error Handling and Data Resilience <a name="error-handling"></a>
 
 #### Continuous Data Updates
 
@@ -404,7 +418,7 @@ In case you notice any disruptions in data updates, you have the flexibility to 
 
 This feature allows you to maintain the flow of information and data integrity, even when troubleshooting or addressing application errors. It offers a seamless user experience and reliability in accessing up-to-the-minute bus data across Finland.
 
-### Contributing
+### Contributing <a name="contributing"></a>
 
 If you'd like to contribute to this project, your contributions are more than welcome. You can contribute in the following ways:
 
