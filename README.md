@@ -42,7 +42,7 @@ To run the application, you can use Docker Compose, which simplifies the setup p
 
 1. Clone the GitHub repository to your local machine:  
 
-    - `git clone https://github.com/ahmetugsuz/Finland_Bus_Routes`  
+       - `git clone https://github.com/ahmetugsuz/Finland_Bus_Routes`  
 
 2. Change (if you're not in this directory already) to the project's directory:  
     - `cd Finland_Bus_Routes`   
@@ -225,8 +225,8 @@ This endpoint accumulates and provides the most recently available recorded data
 
     **Input Parameters:**   
   
-       - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä",  "city": "Vehkamäki"). 
-       - `radius:` The radius (in meters) within which to search for buses near the provided location.  
+    - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä",  "city": "Vehkamäki"). 
+    - `radius:` The radius (in meters) within which to search for buses near the provided location.  
 
     **Example Request (request body):**
     ```json
