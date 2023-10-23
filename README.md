@@ -10,7 +10,7 @@ Welcome to the Finland Bus Routes project! This application provides a service t
     - [Method 1 (Recommended)](#method-1)
     - [Method 2](#method-2)
 - [Usage](#usage)
-- [More Information](#more-inforamtion)
+- [More Information](#more-information)
     - [Key Features](#key-features)
     - [Use Cases](#use-cases)
     - [Architecture](#architecture)
