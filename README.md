@@ -41,6 +41,7 @@ To run the application, you can use Docker Compose, which simplifies the setup p
 #### Building the Application <a name="building"></a>
 
 1. Clone the GitHub repository to your local machine:
+
     - `git clone https://github.com/ahmetugsuz/Finland_Bus_Routes`  
 
 2. Change (if you're not in this directory already) to the project's directory:  
@@ -152,15 +153,12 @@ This endpoint accumulates and provides the most recently available recorded data
     This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
 
     **Parameters:**  
-       - `building number` (int): The number of the building (optional).  
 
-       - `street` (string): The name of the street or specific location (optional).  
-
-       - `city` (string): The city in Finland (optional).  
-
-       - `region` (string): The region within Finland (optional).  
-
-       - `radius` (integer): The search radius in meters.  
+    - `building number` (int): The number of the building (optional).  
+    - `street` (string): The name of the street or specific location (optional).  
+    - `city` (string): The city in Finland (optional).  
+    - `region` (string): The region within Finland (optional).  
+    - `radius` (integer): The search radius in meters.  
 
     **Example:**    
     To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
@@ -177,7 +175,7 @@ This endpoint accumulates and provides the most recently available recorded data
        - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000  
 
     iii. Search by street and building number, within a radius of 500 meters:   
-    
+
        - Request example: /buses_within_radius/22/Tullivuorentie/500  
 
     And more of these type of combinations ...  
