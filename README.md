@@ -4,10 +4,11 @@ Welcome to the Finland Bus Routes project! This application provides a service t
 
 
 ## Table Of Contents
+- [Features](#features)
+- [Overview](#overview)
 
 
-
-## Features
+## Features <a name="features"></a>
 This project includes the following features:
 - Consume telemetry from mqtt.hsl.fi
 - Store the telemetry
@@ -15,7 +16,7 @@ This project includes the following features:
 - Host the infrastructure needed to run the service in docker
 
 
-## Overview
+## Overview <a name="overview"></a>
 
 **Finland Bus Routes** is a comprehensive service designed to capture real-time telemetry data from the MQTT server, mqtt.hsl.fi. This service not only gathers telemetry data but also stores it for future use, making it easily accessible via a user-friendly API. Its primary focus is to provide up-to-date information about bus locations, upcoming stops, and more, specifically for the bus network in Finland. It also includes a cleanup program that manages database memory. This feature can be particularly useful when the intended use of this program is for a short or long duration, allowing you to set up a time management schedule for cleaning up the database.    
 
@@ -78,7 +79,8 @@ These steps allow you to easily start and stop the entire application, including
 
        docker pull ahmettugsuz/all_bus_routes_finland:db-v1.0    
 
-2. Run the database container
+2. Run the database container:  
+
        docker run -d --name bus_routes_db -p 5432:5432 -e POSTGRES_USER=ahmettugsuz -e POSTGRES_PASSWORD=bus_finland -e POSTGRES_DB=bus_data ahmettugsuz/all_bus_routes_finland:db-v1.0      
 
 3. Pull the application image:  
@@ -94,13 +96,11 @@ These steps allow you to easily start and stop the entire application, including
 6. To stop the application, run the following commands:   
 
        docker stop bus_routes_container  
-
        docker stop bus_routes_db  
 
 7. To remove the images:  
 
        docker rm bus_routes_container   
-
        docker rm bus_routes_db     
 
 
