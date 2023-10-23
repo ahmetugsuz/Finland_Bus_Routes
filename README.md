@@ -25,9 +25,9 @@ This project includes the following features:
 
 **Audience:** This project is designed for public transportation enthusiasts, developers, and anyone looking to streamline their bus travel experience in Finland.  
 
-**License:** This project is open-source and available under the MIT License.  
+**License:** This project is open-source and available under the [MIT License](https://opensource.org/licenses/MIT).  
 
-**Contributing:** If you'd like to get involved, please refer to my website and contact me: ahmettu.com.  
+**Contributing:** If you'd like to get involved, please refer to my website and contact me: [ahmettu.com](https://www.ahmettu.com) 
 
 **Status:** Finland Bus Routes is actively maintained and continuously updated to provide the latest and most accurate bus telemetry data.  
 
@@ -61,9 +61,8 @@ To run the application, you can use Docker Compose, which simplifies the setup p
 
 7. To stop the application, press:
     - `Ctrl+C` in the terminal  
-    or 
-    run the following command:   
-    - `docker-compose down` in a separate terminal window.
+    or   
+    - run the following command: `docker-compose down` in a separate terminal window.
 
 Running docker-compose down will not only stop the application but also remove the associated Docker images. If you wish to restart the application, you'll need to rebuild it with the following instructions in part 4.  
 
@@ -91,35 +90,34 @@ These steps allow you to easily start and stop the entire application, including
 
 ## Usage 
 
-
 Once the containers are up and running, you can access the API endpoints by navigating to http://localhost:5001 and appending the desired endpoint to the URL. Alternatively, click on the endpoints listed below.
 The following endpoints are available:   
 
 - **[GET] http://localhost:5001/locations**  
-This endpoint returns JSON data of locations for active buses in Finland, displaying the most recent updates for each bus.  
+This endpoint returns JSON data of locations for active buses in Finland, displaying the most recent updates for each bus.    
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/locations/next_stop**  
-This endpoint returns JSON data of locations and their next stop information for active buses in Finland, displaying the most recent updates for each bus. 
+This endpoint returns JSON data of locations and their next stop information for active buses in Finland, displaying the most recent updates for each bus.   
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /vehicle_number API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/locations/logger**  
-This historical endpoint provides a log of all related data for each active bus in Finland. It allows you to access a comprehensive record of information about each bus, including historical data and changes over time.
+This historical endpoint provides a log of all related data for each active bus in Finland. It allows you to access a comprehensive record of information about each bus, including historical data and changes over time.  
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/locations/latest**  
-This endpoint accumulates and provides the most recently available recorded data for each active bus in Finland. It offers data collected up to the last telemetry signal received for each bus, which may vary based on their individual transmission frequencies.
+This endpoint accumulates and provides the most recently available recorded data for each active bus in Finland. It offers data collected up to the last telemetry signal received for each bus, which may vary based on their individual transmission frequencies.  
 **JSON format:** The JSON objects will be structured the same as the example objects format provided for the example response for /buses_within_radius API-endpoint as shown down below.  
 
 - **[GET] http://localhost:5001/vehicles/{vehicle_number}**   
     This endpoint allows users to retrieve specific information for a vehicle by providing its unique vehicle number as a parameter in the URL.  
 
     **Parameters:**   
-    vehicle_number (integer): The unique identifier for the vehicle. Replace {vehicle_number} in the URL with the actual vehicle number.  
+    - `vehicle_number` (integer): The unique identifier for the vehicle. Replace {vehicle_number} in the URL with the actual vehicle number.  
 
     **Example:**  
     To retrieve information for a vehicle with the number 1340, make a GET request to:  
-    - http://localhost:5001/vehicles/1340  
+       - http://localhost:5001/vehicles/1340  
 
     **Example response for vehicle number 1340:**   
     ```json
@@ -154,26 +152,26 @@ This endpoint accumulates and provides the most recently available recorded data
     This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
 
     **Parameters:**  
-    -  building number (int): The number of the building (optional).  
-    -  street (string): The name of the street or specific location (optional).  
-    -  city (string): The city in Finland (optional).  
-    -  region (string): The region within Finland (optional).  
-    -  radius (integer): The search radius in meters.  
+       -  `building number` (int): The number of the building (optional).  
+       -  `street` (string): The name of the street or specific location (optional).  
+       -  `city` (string): The city in Finland (optional).  
+       -  `region` (string): The region within Finland (optional).  
+       -  `radius` (integer): The search radius in meters.  
 
     **Example:**    
     To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
-    - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
+       - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
 
     **Example Requests:** 
 
     i. Search by street and city, within a radius of 1000 meters:      
-    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
+       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
 
     ii. Search by street and region only, within a radius of 2000 meters:   
-    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
+       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
 
     iii. Search by street and building number, within a radius of 500 meters:   
-    - Request example: /buses_within_radius/22/Tullivuorentie/500    
+       - Request example: /buses_within_radius/22/Tullivuorentie/500    
 
     And more of these type of combinations ...  
 
@@ -220,10 +218,10 @@ This endpoint accumulates and provides the most recently available recorded data
     This endpoint is designed for frontend use and allows users to request bus information near a specified location.
     It operates as a POST method to enable the frontend to send location data to the backend and receive bus data in response.
 
-    **Input Parameters:**  
-
-    - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä",  "city": "Vehkamäki"). 
-    - `radius:` The radius (in meters) within which to search for buses near the provided location.  
+    **Input Parameters:**   
+  
+       - `location:` A JSON object containing information about the user's location, including street and city names (e.g., "street": "Turunväylä",  "city": "Vehkamäki"). 
+       - `radius:` The radius (in meters) within which to search for buses near the provided location.  
 
     **Example Request (request body):**
     ```json
@@ -286,50 +284,51 @@ The `Finland Bus Routes` service is a valuable resource for improving public tra
 
 #### Database Architecture
 
-This section provides an overview of the database architecture utilized in the Finland Bus Routes application. The application relies on MySQL as the database management system to store and manage data related to bus stops, buses, real-time telemetry, and associated events.
+This section provides an overview of the database architecture utilized in the Finland Bus Routes application. The application relies on MySQL as the database management system to store and manage data related to bus stops, buses, real-time telemetry, and associated events.  
+Below, you'll find details on the tables used in the MySQL database and their respective fields, outlining the structure and pupose of each table's columns: 
 
-##### stop_event Table
+##### `stop_event` Table
 
-This table stores information about stop events, including status and arrival times.
+- This table stores information about stop events, including status and arrival times.
 
-**Fields:**
-- `id` (Primary Key): A unique identifier for each stop event.
-- `status`: Textual information about the stop event status.
-- `arrival_time_to_the_stop`: The estimated arrival time for the bus at the stop.
+- **Fields:**
+   - `id` (Primary Key): A unique identifier for each stop event.
+   - `status`: Textual information about the stop event status.
+   - `arrival_time_to_the_stop`: The estimated arrival time for the bus at the stop.
 
-##### stop Table
+##### `stop` Table
 
-The `stop` table captures data related to bus stops, their locations, and associated stop events.
+- The `stop` table captures data related to bus stops, their locations, and associated stop events.
 
-**Fields:**
-- `id` (Primary Key): A unique identifier for each bus stop.
-- `tsi`: A numerical timestamp indicating the time of the stop event.
-- `stop_event`: A foreign key reference to the associated stop event.
-- `stop_name`: The name or identifier of the bus stop.
-- `latitude` and `longitude`: Geographical coordinates of the bus stop's location.
+- **Fields:**
+   - `id` (Primary Key): A unique identifier for each bus stop.
+   - `tsi`: A numerical timestamp indicating the time of the stop event.
+   - `stop_event`: A foreign key reference to the associated stop event.
+   - `stop_name`: The name or identifier of the bus stop.
+   - `latitude` and `longitude`: Geographical coordinates of the bus stop's location.
 
-##### bus Table
+##### `bus` Table
 
-This table provides information about buses, including their unique vehicle numbers and operators.
+- This table provides information about buses, including their unique vehicle numbers and operators.
 
-**Fields:**
-- `vehicle_number` (Primary Key): The unique key used to identify each bus.
-- `operator`: The operator responsible for the bus.
+- **Fields:**
+   - `vehicle_number` (Primary Key): The unique key used to identify each bus.
+   - `operator`: The operator responsible for the bus.
 
-##### bus_status Table
+##### `bus_status` Table
 
-The `bus_status` table serves as the primary data repository for real-time telemetry of active buses.
+- The `bus_status` table serves as the primary data repository for real-time telemetry of active buses.
 
-**Fields:**
-- `id` (Primary Key): A unique identifier for each telemetry data entry.
-- `vehicle_number`: A reference to the specific bus via its vehicle number.
-- `tsi`: A numerical timestamp associated with the telemetry data.
-- `utc_timestamp`: The Coordinated Universal Time (UTC) timestamp for data recording.
-- `route_number`: The bus route number.
-- `current_location`: The current location of the bus.
-- `latitude` and `longitude`: Geographical coordinates of the bus's position.
-- `stop_id`: A reference to the associated bus stop.
-- `destination`: The final destination of the bus.
+- **Fields:**
+   - `id` (Primary Key): A unique identifier for each telemetry data entry.
+   - `vehicle_number`: A reference to the specific bus via its vehicle number.
+   - `tsi`: A numerical timestamp associated with the telemetry data.
+   - `utc_timestamp`: The Coordinated Universal Time (UTC) timestamp for data recording.
+   - `route_number`: The bus route number.
+   - `current_location`: The current location of the bus.
+   - `latitude` and `longitude`: Geographical coordinates of the bus's position.
+   - `stop_id`: A reference to the associated bus stop.
+   - `destination`: The final destination of the bus.
 
 These tables are interconnected to capture comprehensive data about the buses and their activities, enabling real-time tracking and information retrieval.
 
@@ -365,12 +364,15 @@ This adaptability allows you to strike a balance between maintaining an up-to-th
 
 #### Continuous Data Updates
 
-The Finland Bus Routes service is designed to ensure the continuous consumption of telemetry data, even in the presence of error messages or application issues. This resilient approach guarantees that data updates are consistently processed, providing ongoing access to reliable and real-time information. If you encounter an error on one of the API endpoints, try the following steps:
+The **Finland Bus Routes** service is designed to ensure the continuous consumption of telemetry data, even in the presence of error messages or application issues. This resilient approach guarantees that data updates are consistently processed, providing ongoing access to reliable and real-time information. If you encounter an error on one of the API endpoints, try the following steps:
 
-1. Refresh the page to verify if the data is still updating.
-2. Attempt other API endpoints to cross-check.
-3. If data is not updating, check the terminal for any critical issues.
-4. If necessary, restart the service.
+1. Refresh the page to verify if the data is still updating.  
+
+2. Attempt other API endpoints to cross-check.  
+
+3. If data is not updating, check the terminal for any critical issues.  
+
+4. If necessary, restart the service.  
 
 #### Resolving Data Disruptions
 
