@@ -152,11 +152,11 @@ This endpoint accumulates and provides the most recently available recorded data
     This endpoint allows users to search for buses within a specified radius based on various attributes such as street, city, region, or building number. Users can provide any combination of two of these attributes. The outcome depends on the specified radius; a larger radius captures signals from buses within a broader area around the address given in the url.
 
     **Parameters:**  
-       -  `building number` (int): The number of the building (optional).  
-       -  `street` (string): The name of the street or specific location (optional).  
-       -  `city` (string): The city in Finland (optional).  
-       -  `region` (string): The region within Finland (optional).  
-       -  `radius` (integer): The search radius in meters.  
+       - `building number` (int): The number of the building (optional).  
+       - `street` (string): The name of the street or specific location (optional).  
+       - `city` (string): The city in Finland (optional).  
+       - `region` (string): The region within Finland (optional).  
+       - `radius` (integer): The search radius in meters.  
 
     **Example:**    
     To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
@@ -164,14 +164,14 @@ This endpoint accumulates and provides the most recently available recorded data
 
     **Example Requests:** 
 
-    i. Search by street and city, within a radius of 1000 meters:      
+    i. Search by street and city, within a radius of 1000 meters:   
        - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
 
-    ii. Search by street and region only, within a radius of 2000 meters:   
-       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000
+    ii. Search by street and region only, within a radius of 2000 meters: 
+       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000  
 
     iii. Search by street and building number, within a radius of 500 meters:   
-       - Request example: /buses_within_radius/22/Tullivuorentie/500    
+       - Request example: /buses_within_radius/22/Tullivuorentie/500  
 
     And more of these type of combinations ...  
 
@@ -349,10 +349,14 @@ The Cleanup Application is set to perform cleanup every 3 minutes by default, en
 
 To customize the Cleanup Application's cleanup interval (e.g., every 24 hours to perform daily cleanup, clearing data from the previous day), follow these steps:
 
-1. Open the Cleanup Application's configuration file (`cleanup.py`).
-2. Locate the setting (variable inside the code) for the cleanup interval.
-3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = 86,400 seconds or 1 hour = 3,600 seconds).
-4. Save the configuration file.
+1. Open the Cleanup Application's configuration file (`cleanup.py`).  
+
+2. Locate the setting (variable inside the code) for the cleanup interval.  
+
+3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = 86,400 seconds or 1 hour = 3,600 seconds).  
+
+4. Save the configuration file.  
+
 5. Rebuild the application as described in the [Building the Application](#building-the-application) section. If you don't want to rebuild the entire application (which might lead to missing some data), consider building only the `cleanup.py` component.
 
 By extending the cleanup interval, you can retain bus telemetry data for a full day or even weeks/months, accommodating scenarios where historical data is more relevant.
