@@ -46,7 +46,7 @@ To run the application, you can use Docker Compose, which simplifies the setup p
 
 2. Change (if you're not in this directory already) to the project's directory:   
 
-       `cd Finland_Bus_Routes`   
+       cd Finland_Bus_Routes   
 
 3. Make sure the `docker-compose.yml` file is present in the project's root directory, and
     that you have Docker Desktop installed on your machine.
