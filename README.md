@@ -190,21 +190,22 @@ This endpoint accumulates and provides the most recently available recorded data
     - `radius` (integer): The search radius in meters.  
 
     **Example:**    
-    To find buses within a 500-meter radius of Mannerheimintie in Uusimaa, make a GET request to:  
-       - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
+    To find buses within a 500-meter radius of ***Mannerheimintie*** in ***Uusimaa***, make a GET request to:  
+    - http://localhost:5001/buses_within_radius/Mannerheimintie/Uusimaa/500  
 
     **Example Requests:** 
 
     i. Search by street and city, within a radius of 1000 meters:   
 
-    * Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
+    * Request example: `/buses_within_radius/Mannerheimintie/Helsinki/1000`    
 
     ii. Search by street and region only, within a radius of 2000 meters: 
 
-       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000  
+    * Request example: `/buses_within_radius/Mannerheimintie/Helsinki/2000`   
 
     iii. Search by street and building number, within a radius of 500 meters:   
-    - Request example: /buses_within_radius/22/Tullivuorentie/500  
+
+    * Request example: `/buses_within_radius/22/Tullivuorentie/500`    
 
     And more of these type of combinations ...  
 
@@ -243,7 +244,6 @@ This endpoint accumulates and provides the most recently available recorded data
     ```
 
     ***Note:*** Replace the `street`, `city`, and `radius` values in the URL with your desired location and radius parameters.  
-
     ***Remember:***  A higher radius targets larger area around the address provided in the url.  
 
 - **[POST] /buses_near_me**  
@@ -323,7 +323,6 @@ Below, you'll find details on the tables used in the MySQL database and their re
 ##### `stop_event` Table
 
 - This table stores information about stop events, including status and arrival times.
-
 - **Fields:**
    - `id` (Primary Key): A unique identifier for each stop event.
    - `status`: Textual information about the stop event status.
@@ -332,7 +331,6 @@ Below, you'll find details on the tables used in the MySQL database and their re
 ##### `stop` Table
 
 - The `stop` table captures data related to bus stops, their locations, and associated stop events.
-
 - **Fields:**
    - `id` (Primary Key): A unique identifier for each bus stop.
    - `tsi`: A numerical timestamp indicating the time of the stop event.
@@ -343,7 +341,6 @@ Below, you'll find details on the tables used in the MySQL database and their re
 ##### `bus` Table
 
 - This table provides information about buses, including their unique vehicle numbers and operators.
-
 - **Fields:**
    - `vehicle_number` (Primary Key): The unique key used to identify each bus.
    - `operator`: The operator responsible for the bus.
@@ -351,7 +348,6 @@ Below, you'll find details on the tables used in the MySQL database and their re
 ##### `bus_status` Table
 
 - The `bus_status` table serves as the primary data repository for real-time telemetry of active buses.
-
 - **Fields:**
    - `id` (Primary Key): A unique identifier for each telemetry data entry.
    - `vehicle_number`: A reference to the specific bus via its vehicle number.
@@ -365,7 +361,7 @@ Below, you'll find details on the tables used in the MySQL database and their re
 
 These tables are interconnected to capture comprehensive data about the buses and their activities, enabling real-time tracking and information retrieval.
 
-### Database Ralation Diagram <a name="database-relation-diagram"></a>
+#### Database Ralation Diagram <a name="database-relation-diagram"></a>
 ![Database Relation Diagram](Database-relation-diagram.png)
 
 ### Cleanup Application <a name="cleanup-application"></a>
