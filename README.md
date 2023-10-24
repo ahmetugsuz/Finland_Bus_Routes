@@ -388,7 +388,7 @@ To customize the Cleanup Application's cleanup interval (e.g., every 24 hours to
 
 4. Save the configuration file.  
 
-5. Rebuild the application as described in the [Building the Application](#building-the-application) section. If you don't want to rebuild the entire application (which might lead to missing some data), consider building only the `cleanup.py` component.
+5. Rebuild the application as described in the [Building the Application](#getting-started) section. If you don't want to rebuild the entire application (which might lead to missing some data), consider building only the `cleanup.py` component.
 
 By extending the cleanup interval, you can retain bus telemetry data for a full day or even weeks/months, accommodating scenarios where historical data is more relevant.
 
