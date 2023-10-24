@@ -310,7 +310,7 @@ This endpoint accumulates and provides the most recently available recorded data
 
 - **Developers and App Integration**: Developers can integrate the service's API into their applications to provide users with bus-related information, such as location tracking and arrival times.    
 
-The `Finland Bus Routes` service is a valuable resource for improving public transportation experiences, enhancing traffic management, and supporting research efforts related to bus operations in Finland. Its real-time telemetry data and accessible API make it a powerful tool for a wide range of users and applications.  
+The **Finland Bus Routes** service is a valuable resource for improving public transportation experiences, enhancing traffic management, and supporting research efforts related to bus operations in Finland. Its real-time telemetry data and accessible API make it a powerful tool for a wide range of users and applications.  
 
 
 ### Architecture <a name="architecture"></a>
