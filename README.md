@@ -85,6 +85,8 @@ To run the application, you can use Docker Compose, which simplifies the setup p
 
 Running docker-compose down will not only stop the application but also remove the associated Docker images. If you wish to restart the application, you'll need to rebuild it with the following instructions in part 4.  
 
+Additionally, you can also use the Ctrl+C keyboard shortcut to stop the running Docker containers, and if you wish to remove the associated Docker images, you can type `docker-compose down`.  
+
 These steps allow you to easily start and stop the entire application, including all the required services, using Docker Compose.
 
 
@@ -412,6 +414,8 @@ The **Finland Bus Routes** service is designed to ensure the continuous consumpt
 In case you notice any disruptions in data updates, you have the flexibility to manually restart the application or application image (`app.py`) while keeping the database operational. This robust error-handling mechanism ensures uninterrupted data acquisition, contributing to a reliable and responsive service.
 
 This feature allows you to maintain the flow of information and data integrity, even when troubleshooting or addressing application errors. It offers a seamless user experience and reliability in accessing up-to-the-minute bus data across Finland.
+
+Please note that due to the geocode policy, inactivity or long periods of inactivity may lead to a TimeoutError in the app. If this occurs, you can resolve it by simply restarting the 'app.py' script. To prevent such errors, consider sending periodic requests to the geocode service or stopping the application when it's not actively in use, ensuring a smoother and more reliable user experience.
 
 ### Contributing <a name="contributing"></a>
 
