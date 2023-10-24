@@ -197,14 +197,13 @@ This endpoint accumulates and provides the most recently available recorded data
 
     i. Search by street and city, within a radius of 1000 meters:   
 
-    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
+    * Request example: /buses_within_radius/Mannerheimintie/Helsinki/1000  
 
     ii. Search by street and region only, within a radius of 2000 meters: 
 
-    - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000  
+       - Request example: /buses_within_radius/Mannerheimintie/Helsinki/2000  
 
     iii. Search by street and building number, within a radius of 500 meters:   
-
     - Request example: /buses_within_radius/22/Tullivuorentie/500  
 
     And more of these type of combinations ...  
