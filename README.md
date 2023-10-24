@@ -83,7 +83,7 @@ To run the application, you can use Docker Compose, which simplifies the setup p
     or   
     - run the following command: `docker-compose down` in a separate terminal window.
 
-Running docker-compose down will not only stop the application but also remove the associated Docker images. If you wish to restart the application, you'll need to rebuild it with the following instructions in part 4.  
+Running `docker-compose down` will not only stop the application but also remove the associated Docker images. If you wish to restart the application, you'll need to rebuild it with the following instructions in part 4.  
 
 Additionally, you can also use the Ctrl+C keyboard shortcut to stop the running Docker containers, and if you wish to remove the associated Docker images, you can type `docker-compose down`.  
 
@@ -149,7 +149,7 @@ This endpoint accumulates and provides the most recently available recorded data
 
     **Example:**  
     To retrieve information for a vehicle with the number 1340, make a GET request to:  
-       - http://localhost:5001/vehicles/1340  
+    - http://localhost:5001/vehicles/1340  
 
     **Example response for vehicle number 1340:**   
     ```json
