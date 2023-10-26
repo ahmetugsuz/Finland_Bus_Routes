@@ -391,14 +391,16 @@ topic = "/hfp/v2/journey/ongoing/+/bus/+/+/+/+/+/+/+/2/#"
   
 These topics provide us with essential data such as vehicle identifiers, geographical coordinates, next stop, locations, status, and more.
 
-### Data Processing
+#### Data Processing
 
-When telemetry messages arrive, they are processed and efficiently stored in our **MySQL** database. This data includes information like GPS coordinates and status, forming the foundation of our real-time service.
+When telemetry messages arrive, they are processed and efficiently stored in our **MySQL** database. This data includes information like GPS coordinates, destination, route number, utc timestamp, next stop, forming the foundation of our real-time service.
 
-#### How It Works
+#### MQTT message subscription 
 
-- Messages from the MQTT server, `mqtt.hsl.fi`, are processed in JSON-V2 format.
-- We focus on ongoing bus journeys and use a geohash level of 2 for location accuracy.
+- We process messages from the MQTT server, `mqtt.hsl.fi`, in JSON-V2 format by subscribing to `v2`.
+- We focus on ongoing bus journeys and use a geohash level of 2 for location accuracy, which prevents an excessive number of signals. This approach is particularly suitable for the current deployment phase, serving developers rather than end-users.
+- We only gather signals from buses, and no other vehicles. 
+
 
 This approach ensures that our users have access to the latest and accurate information about bus locations and more.
 
