@@ -105,7 +105,7 @@ Docker:
 - **Installation:** Download and install Docker (Engine) for your operating system from [Docker Engine Installation](https://docs.docker.com/engine/install/). Docker Engine is core component of Docker that allows to build, run, manage container. To be able to pull container images from Docker Hub, you need to have the Docker Engine installed.   
 ***Note:*** Docker Desktop is a comprehensive package that includes the Docker Engine. If you've already installed Docker Desktop, you have the Docker Engine installed and ready to use.
 
-1. **Pull the database image** from Docker Hub by typing the following command to a local folder on your machine: 
+1. **Pull the database image** from Docker Hub by typing the following command in your terminal to download the image:    
 
        docker pull ahmettugsuz/all_bus_routes_finland:db-v1.0    
 
