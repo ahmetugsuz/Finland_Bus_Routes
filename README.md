@@ -374,6 +374,46 @@ The Cleanup Application is an essential component of the Finland Bus Routes syst
 
 - **Developer Focus**: Finland Bus Routes primarily targets developers interested in exploring and understanding real-time bus telemetry data. For this developer-focused environment, historical data may not be necessary, making the Cleanup Application a valuable asset.
 
+
+
+### MQTT Telemetry Data Subscription
+
+The **MQTT-Subscriber** class in the Finland Bus Routes project is responsible for subscribing to specific MQTT topics and collecting real-time telemetry data from buses operating across Finland. This vital component forms the backbone of our service, ensuring that we consistently provide the latest information about bus locations, speeds, and more.
+
+#### Subscribed Topics
+
+The MQTT-Subscriber class subscribes to carefully curated MQTT topics that supply us with crucial real-time data about ongoing bus journeys. These topics include details such as the vehicle's identifier, geographical location, and other pertinent information. Here's what these subscribed topics look like:
+
+```python
+
+# Topic we want to subscribe to
+topic = "/hfp/v2/journey/ongoing/+/bus/+/+/+/+/+/+/+/2/#"
+
+```
+
+These topics are thoughtfully chosen to capture the precise data we need to offer accurate and real-time bus information to our users.
+
+#### Data Collection and Storage
+
+The MQTT-Subscriber class connects to the MQTT broker, and by subscribing to the specified topics, it receives incoming telemetry messages. These messages, containing valuable real-time information, are collected and efficiently stored in our MySQL database.
+
+This data, originating from the MQTT broker, forms the core of our service, providing users with up-to-the-minute bus telemetry data. It includes critical details like GPS coordinates, bus speeds, and more.
+
+
+#### Telemetry Data Processing
+
+The **MQTT-Subscriber** processes the telemetry data, which arrives in the JSON-V2 format. It focuses on ongoing bus journeys and sets the geohash level to 2 for location accuracy.
+
+Additional Details
+
+- This method is triggered by the MQTT client library when a new message arrives on the subscribed topic. The MQTT server used in our case is 'mqtt.hsl.fi'.
+- The MQTT-Subscriber class extracts crucial information from the received messages, such as the topic, which is in the format: "/hfp/v2/journey/ongoing/vp/bus/...", and the payload, which provides details about the bus.
+
+This detailed telemetry data subscription system ensures that we keep our service current and our users well-informed about the public transportation system across Finland.
+
+For a deeper understanding of our MQTT setup or to [contribute][#contributing] to this project, please refer to the Contributing section. 
+
+
 #### Configuration <a name="configuration"></a>
 
 The Cleanup Application is set to perform cleanup every 3 minutes by default, ensuring that the database remains up-to-date without retaining outdated information. However, the cleanup interval is configurable to meet specific requirements.
