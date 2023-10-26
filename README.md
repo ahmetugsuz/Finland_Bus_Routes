@@ -55,6 +55,11 @@ To run the application, you can use Docker Compose, which simplifies the setup p
 
 ### Method 1: Using Docker Compose (Recommended, Easiest Way) <a name="method-1"></a>
 
+#### Requirements:
+
+Docker Compose:  
+- Installation: Download and install Docker Desktop for your operating system from [Docker Desktop Installation](https://docs.docker.com/desktop/install/mac-install/).
+
 #### Building the Application <a name="building"></a>
 
 1. Clone the GitHub repository to your local machine:  
@@ -93,6 +98,12 @@ These steps allow you to easily start and stop the entire application, including
 
 
 ### Method 2: Running Docker commands manually <a name="method-2"></a>
+
+#### Requirements
+
+Docker:  
+- Installation: Download and install Docker for your operating system from [Docker Installation](https://docs.docker.com/get-docker/)
+
 1. Pull the database image:  
 
        docker pull ahmettugsuz/all_bus_routes_finland:db-v1.0    
