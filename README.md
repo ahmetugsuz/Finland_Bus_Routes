@@ -375,6 +375,26 @@ The Cleanup Application is an essential component of the Finland Bus Routes syst
 - **Developer Focus**: Finland Bus Routes primarily targets developers interested in exploring and understanding real-time bus telemetry data. For this developer-focused environment, historical data may not be necessary, making the Cleanup Application a valuable asset.
 
 
+#### Configuration <a name="configuration"></a>
+
+The Cleanup Application is set to perform cleanup every 3 minutes by default, ensuring that the database remains up-to-date without retaining outdated information. However, the cleanup interval is configurable to meet specific requirements.
+
+To customize the Cleanup Application's cleanup interval (e.g., every 24 hours to perform daily cleanup, clearing data from the previous day), follow these steps:
+
+1. Open the Cleanup Application's configuration file (`cleanup.py`).  
+
+2. Locate the setting (variable inside the code) for the cleanup interval.  
+
+3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = 86,400 seconds or 1 hour = 3,600 seconds).  
+
+4. Save the configuration file.  
+
+5. Rebuild the application as described in the [Building the Application](#getting-started) section. If you don't want to rebuild the entire application (which might lead to missing some data), consider building only the `cleanup.py` component.
+
+By extending the cleanup interval, you can retain bus telemetry data for a full day or even weeks/months, accommodating scenarios where historical data is more relevant.
+
+This adaptability allows you to strike a balance between maintaining an up-to-the-minute database for development purposes and preserving data for longer durations when needed.  
+
 
 ### MQTT Telemetry Data Subscription
 
@@ -406,26 +426,6 @@ This approach ensures that our users have access to the latest and accurate info
 
 To get involved in this project or learn more about our MQTT setup, please visit the [Contributing](#contributing) section.
 
-
-#### Configuration <a name="configuration"></a>
-
-The Cleanup Application is set to perform cleanup every 3 minutes by default, ensuring that the database remains up-to-date without retaining outdated information. However, the cleanup interval is configurable to meet specific requirements.
-
-To customize the Cleanup Application's cleanup interval (e.g., every 24 hours to perform daily cleanup, clearing data from the previous day), follow these steps:
-
-1. Open the Cleanup Application's configuration file (`cleanup.py`).  
-
-2. Locate the setting (variable inside the code) for the cleanup interval.  
-
-3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = 86,400 seconds or 1 hour = 3,600 seconds).  
-
-4. Save the configuration file.  
-
-5. Rebuild the application as described in the [Building the Application](#getting-started) section. If you don't want to rebuild the entire application (which might lead to missing some data), consider building only the `cleanup.py` component.
-
-By extending the cleanup interval, you can retain bus telemetry data for a full day or even weeks/months, accommodating scenarios where historical data is more relevant.
-
-This adaptability allows you to strike a balance between maintaining an up-to-the-minute database for development purposes and preserving data for longer durations when needed.
 
 
 ### Error Handling and Data Resilience <a name="error-handling"></a>
