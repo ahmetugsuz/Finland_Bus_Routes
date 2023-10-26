@@ -378,40 +378,31 @@ The Cleanup Application is an essential component of the Finland Bus Routes syst
 
 ### MQTT Telemetry Data Subscription
 
-The **MQTT-Subscriber** class in the Finland Bus Routes project is responsible for subscribing to specific MQTT topics and collecting real-time telemetry data from buses operating across Finland. This vital component forms the backbone of our service, ensuring that we consistently provide the latest information about bus locations, speeds, and more.
+The **MQTT-Subscriber** class in the Finland Bus Routes project plays a critical role in fetching real-time bus telemetry data. It does this by subscribing to specific MQTT topics and collecting data from buses operating throughout Finland.
 
-#### Subscribed Topics
+#### Data Sources
 
-The MQTT-Subscriber class subscribes to carefully curated MQTT topics that supply us with crucial real-time data about ongoing bus journeys. These topics include details such as the vehicle's identifier, geographical location, and other pertinent information. Here's what these subscribed topics look like:
+Our MQTT-Subscriber class listens to the following MQTT topics:
 
 ```python
-
 # Topic we want to subscribe to
 topic = "/hfp/v2/journey/ongoing/+/bus/+/+/+/+/+/+/+/2/#"
-
 ```
+  
+These topics provide us with essential data such as vehicle identifiers, geographical coordinates, next stop, locations, status, and more.
 
-These topics are thoughtfully chosen to capture the precise data we need to offer accurate and real-time bus information to our users.
+### Data Processing
 
-#### Data Collection and Storage
+When telemetry messages arrive, they are processed and efficiently stored in our **MySQL** database. This data includes information like GPS coordinates and status, forming the foundation of our real-time service.
 
-The MQTT-Subscriber class connects to the MQTT broker, and by subscribing to the specified topics, it receives incoming telemetry messages. These messages, containing valuable real-time information, are collected and efficiently stored in our MySQL database.
+#### How It Works
 
-This data, originating from the MQTT broker, forms the core of our service, providing users with up-to-the-minute bus telemetry data. It includes critical details like GPS coordinates, bus speeds, and more.
+- Messages from the MQTT server, `mqtt.hsl.fi`, are processed in JSON-V2 format.
+- We focus on ongoing bus journeys and use a geohash level of 2 for location accuracy.
 
+This approach ensures that our users have access to the latest and accurate information about bus locations and more.
 
-#### Telemetry Data Processing
-
-The **MQTT-Subscriber** processes the telemetry data, which arrives in the JSON-V2 format. It focuses on ongoing bus journeys and sets the geohash level to 2 for location accuracy.
-
-Additional Details
-
-- This method is triggered by the MQTT client library when a new message arrives on the subscribed topic. The MQTT server used in our case is 'mqtt.hsl.fi'.
-- The MQTT-Subscriber class extracts crucial information from the received messages, such as the topic, which is in the format: "/hfp/v2/journey/ongoing/vp/bus/...", and the payload, which provides details about the bus.
-
-This detailed telemetry data subscription system ensures that we keep our service current and our users well-informed about the public transportation system across Finland.
-
-For a deeper understanding of our MQTT setup or to [contribute][#contributing] to this project, please refer to the Contributing section. 
+To get involved in this project or learn more about our MQTT setup, please visit the [Contributing](#contributing) section.
 
 
 #### Configuration <a name="configuration"></a>
