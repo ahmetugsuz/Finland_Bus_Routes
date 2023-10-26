@@ -16,8 +16,10 @@ Welcome to the Finland Bus Routes project! This application provides a service t
     - [Architecture](#architecture)
         - [Database Architecture](#database-architecture)
         - [Database Relation Diagram](#database-relation-diagram)
+    - [Cleanup Program](#cleanup-application)
         - [Configuration](#configuration)
-        - [Error Handling and Data Resilience](#error-handling)
+    - [MQTT telemetry data subscription](#mqtt-telemetry-data-subscription)
+    - [Error Handling and Data Resilience](#error-handling)
     - [Contributing](#contributing)
 
 
@@ -396,7 +398,7 @@ By extending the cleanup interval, you can retain bus telemetry data for a full 
 This adaptability allows you to strike a balance between maintaining an up-to-the-minute database for development purposes and preserving data for longer durations when needed.  
 
 
-### MQTT Telemetry Data Subscription
+### MQTT Telemetry Data Subscription <a name="mqtt-telemetry-data-subscription"></a>
 
 The **MQTT-Subscriber** class in the Finland Bus Routes project plays a critical role in fetching real-time bus telemetry data. It does this by subscribing to specific MQTT topics and collecting data from buses operating throughout Finland.
 
