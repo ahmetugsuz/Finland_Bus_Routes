@@ -117,7 +117,7 @@ Docker:
 
        docker pull ahmettugsuz/all_bus_routes_finland:cleanup-v1.0   
 
-    **helping hints #1:** just cpy/pull all of them at once; run this cmd in the terminal: 
+**helping hints #1:** just cpy/pull all of them at once; run this cmd in the terminal:   
 
         docker pull ahmettugsuz/all_bus_routes_finland:db-v2.0
         docker pull ahmettugsuz/all_bus_routes_finland:app-v2.0
@@ -136,7 +136,7 @@ Docker:
 
        docker run -d --name bus_routes_cleanup -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:cleanup-v1.0   
 
-    **helping hints #2:** just run all of them at once with correct order: 
+**helping hints #2:** just run all of them at once with correct order:  
 
         docker run -d --name bus_routes_db -p 5432:5432 -e POSTGRES_USER=ahmettugsuz -e POSTGRES_PASSWORD=bus_finland -e POSTGRES_DB=bus_data ahmettugsuz/all_bus_routes_finland:db-v2.0      
         docker run -d --name bus_routes_app -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:app-v1.0  
