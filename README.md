@@ -400,7 +400,7 @@ To customize the Cleanup Application's cleanup interval (e.g., every 24 hours to
 
 2. Locate the setting (variable inside the code) for the cleanup interval.  
 
-3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = 86,400 seconds or 1 hour = 3,600 seconds).  
+3. Adjust the interval (variable value: `timesheduler`) to the desired value in seconds (e.g., 24 hours = **86400** seconds or 1 hour = **3600** seconds).  
 
 4. Save the configuration file.  
 
