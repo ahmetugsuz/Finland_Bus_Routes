@@ -136,7 +136,8 @@ Docker:
 
 ## Usage <a name="usage"></a>
 
-Once the containers are up and running, you can access the API endpoints by navigating to http://localhost:5001 and appending the desired endpoint to the URL. Alternatively, click on the endpoints listed below.
+Once the containers are up and running, you can access the API endpoints by navigating to http://localhost:5001 and appending the desired endpoint to the URL. Alternatively, click on the endpoints listed below.  
+**Note:** By default, the API limits the response to the latest 300 updates for each endpoint to ensure efficient data retrieval. However, you can adjust this limitation if needed. Additionally, the data is periodically cleaned up by a cleanup application, and you can configure the cleanup interval based on your usage preferences. For development testing or real-life use, the cleanup interval and data limitation can be customized according to your requirements.  
 The following endpoints are available:   
 
 - **[GET] http://localhost:5001/locations**  
@@ -437,6 +438,8 @@ When telemetry messages arrive, they are processed and efficiently stored in our
 
 
 This approach ensures that our users have access to the latest and accurate information about bus locations and more.
+
+To learn more about MQTT subscriptions you can refer to the [official documentation](https://digitransit.fi/en/developers/apis/4-realtime-api/vehicle-positions/digitransit-mqtt/) provided by the service.
 
 To get involved in this project or learn more about our MQTT setup, please visit the [Contributing](#contributing) section.
 
