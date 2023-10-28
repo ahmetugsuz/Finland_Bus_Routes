@@ -83,7 +83,7 @@ Docker Compose:
 
        docker-compose up  
 
-6. Access the API at http://localhost:5001/{API-endpoint} and interact with it as described in the Usage section.  
+6. Access the API at http://localhost:5001/{API-endpoint} and interact with it as described in the [Usage](#usage) section.  
 
 7. To stop the application, press:
     - `Ctrl+C` in the terminal  
@@ -107,31 +107,55 @@ Docker:
 
 1. **Pull the database image** from Docker Hub by typing the following command in your terminal to download the image:    
 
-       docker pull ahmettugsuz/all_bus_routes_finland:db-v1.0    
+       docker pull ahmettugsuz/all_bus_routes_finland:db-v2.0    
 
-2. Run the database container:  
+2. Pull the application image:  
 
-       docker run -d --name bus_routes_db -p 5432:5432 -e POSTGRES_USER=ahmettugsuz -e POSTGRES_PASSWORD=bus_finland -e POSTGRES_DB=bus_data ahmettugsuz/all_bus_routes_finland:db-v1.0      
+       docker pull ahmettugsuz/all_bus_routes_finland:app-v2.0   
+       
+3. Pull the cleanup image:  
 
-3. Pull the application image:  
+       docker pull ahmettugsuz/all_bus_routes_finland:cleanup-v1.0   
 
-       docker pull ahmettugsuz/all_bus_routes_finland:app-v1.0   
+**helping hints #1:** just cpy/pull all of them at once; run this cmd in the terminal: 
 
-4. Run the application container:
+        docker pull ahmettugsuz/all_bus_routes_finland:db-v2.0
+        docker pull ahmettugsuz/all_bus_routes_finland:app-v2.0
+        docker pull ahmettugsuz/all_bus_routes_finland:cleanup-v1.0  
+         
 
-       docker run -d --name bus_routes_container -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:app-v1.0   
+4. Run the database container:  
 
-5. Access the API at http://localhost:5001 and interact with it as described in the Usage section.  
+       docker run -d --name bus_routes_db -p 5432:5432 -e POSTGRES_USER=ahmettugsuz -e POSTGRES_PASSWORD=bus_finland -e POSTGRES_DB=bus_data ahmettugsuz/all_bus_routes_finland:db-v2.0           
 
-6. To stop the application, run the following commands:   
+5. Run the application container:
 
-       docker stop bus_routes_container  
-       docker stop bus_routes_db  
+       docker run -d --name bus_routes_app -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:app-v2.0   
 
-7. To remove the images:  
+6. Run the cleanup container:
 
-       docker rm bus_routes_container   
-       docker rm bus_routes_db     
+       docker run -d --name bus_routes_cleanup -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:cleanup-v1.0   
+
+**helping hints #2:** just run all of them at once with correct order: 
+
+        docker run -d --name bus_routes_db -p 5432:5432 -e POSTGRES_USER=ahmettugsuz -e POSTGRES_PASSWORD=bus_finland -e POSTGRES_DB=bus_data ahmettugsuz/all_bus_routes_finland:db-v2.0      
+        docker run -d --name bus_routes_app -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:app-v1.0  
+        docker run -d --name bus_routes_cleanup -p 5001:5001 --link bus_routes_db:host-bus_routes_db ahmettugsuz/all_bus_routes_finland:cleanup-v1.0    
+        
+
+7. Access the API at http://localhost:5001 and interact with it as described in the [Usage](#usage) section.  
+
+8. To stop the application, run the following commands:   
+
+       docker stop bus_routes_app  
+       docker stop bus_routes_cleanup  
+       docker stop bus_routes_db    
+
+9. To remove the images:  
+
+       docker rm bus_routes_app     
+       docker rm bus_routes_cleanup  
+       docker rm bus_routes_db       
 
 
 ## Usage <a name="usage"></a>
