@@ -491,6 +491,8 @@ This feature allows you to maintain the flow of information and data integrity, 
 
 Please note that due to the geocode policy, inactivity or long periods of inactivity may lead to a TimeoutError in the app. If this occurs, you can resolve it by simply restarting the 'app.py' script. To prevent such errors, consider sending periodic requests to the geocode service or stopping the application when it's not actively in use, ensuring a smoother and more reliable user experience.
 
+**OpenCage Geocoding API documentation:** [geocoding API documentation](https://opencagedata.com/api) 
+
 ### Contributing <a name="contributing"></a>
 
 If you'd like to contribute to this project, your contributions are more than welcome. You can contribute in the following ways:
