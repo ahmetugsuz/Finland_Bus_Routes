@@ -42,7 +42,7 @@ This project includes the following features:
 
 **Audience:** This project is designed for public transportation enthusiasts, developers, and anyone looking to streamline their bus travel experience in Finland.  
 
-**License:** This project is open-source and available under the [MIT License](https://opensource.org/licenses/MIT).  
+**License:** This project is open-source and available under the [GNU License](LICENSE).  
 
 **Contributing:** If you'd like to get involved, please refer to my website and contact me: [ahmettu.com](https://www.ahmettu.com) 
 
