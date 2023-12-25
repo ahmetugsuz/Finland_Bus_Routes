@@ -43,8 +43,8 @@ class MQTTSubscriber:
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # Disabling the ssl verification, DON'T Recommend this on dev, but to not use time on this in first place as it's not the main case, i'm avoiding it.
 
         # Initialize the GraphQL client and set the endpoint URL
-        subscription_key = 'baf79f82592c44aabce4feff0ef46c25'
-        url = 'https://dev-api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
+        subscription_key = 'c2206061ead14e778ab1fb5fee0c1716'
+        url = 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
         #self.graph_client = TransportClient(transport=transport, fetch_schema_from_transport=True)
         # Set up headers with the subscription key
         transport = RequestsHTTPTransport(

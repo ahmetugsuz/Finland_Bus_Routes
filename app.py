@@ -19,22 +19,30 @@ from opencage.geocoder import OpenCageGeocode
 # Initialize Flask application
 app = Flask(__name__)        
 
-def connect_to_db():
+def connect_to_db(max_retries=0):
     # Connecting to db
-    time.sleep(2)
-    conn_pool = psycopg2.pool.SimpleConnectionPool(
-            minconn=1,
-            maxconn=10,
-            host="db",
-            port=5432,
-            database="bus_data",
-            user="ahmettugsuz",
-            password="bus_finland",
-    )
-    return conn_pool
+    try:
+        conn_pool = psycopg2.pool.SimpleConnectionPool(
+                minconn=1,
+                maxconn=10,
+                host="db",
+                port=5432,
+                database="bus_data",
+                user="ahmettugsuz",
+                password="bus_finland",
+        )
+        return conn_pool
+    except Exception as e:
+        if max_retries < 1:
+            print("Retrying db connection..")
+            time.sleep(2)
+            # Corrected recursive call
+            return connect_to_db(max_retries + 1)
+
+        print(f"Error connecting to the database: {e}")
+        return None
 
 conn_pool = connect_to_db()
-
 
 # Setting up the cursor 
 cursor = None
@@ -114,7 +122,7 @@ def start_subscriber():
 
 
 def start_threads():
-    #time.sleep(1)
+    time.sleep(5)
     #logger.info("The Threads getting ready to be executed ..")
     # Threading the subscriber class independently so that the class can run on max 10 threads simultaneously, while also the Flask app can run simultaneously when the app is running
     executor_subscriber_class = ThreadPoolExecutor(max_workers=1)
